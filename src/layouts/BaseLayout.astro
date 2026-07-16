@@ -61,7 +61,7 @@ const pageTitle =
           theme = 'dark'
         }
         root.dataset.theme = theme
-        const level = Number(size)
+        const level = size !== null ? Number(size) : NaN
         if (Number.isInteger(level) && level >= 0 && level <= 6 && level !== 3) {
           root.dataset.fontsize = String(level)
         }
