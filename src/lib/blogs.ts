@@ -7,7 +7,6 @@ export interface Blog {
   dateFormatted: string
   html: string
   excerpt: string
-  readingMinutes: number
 }
 
 const files = import.meta.glob<string>('../blogs/*.md', {
@@ -75,7 +74,6 @@ function parseBlog(path: string, raw: string): Blog {
   const words = plain.split(' ').filter(Boolean)
   const excerpt =
     words.slice(0, 32).join(' ') + (words.length > 32 ? '…' : '')
-  const readingMinutes = Math.max(1, Math.round(words.length / 200))
 
   return {
     slug,
@@ -84,7 +82,6 @@ function parseBlog(path: string, raw: string): Blog {
     dateFormatted: formatDate(date),
     html,
     excerpt,
-    readingMinutes,
   }
 }
 

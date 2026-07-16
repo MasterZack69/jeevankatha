@@ -35,7 +35,6 @@ const blogs = getAllBlogs().slice().reverse()
   </div>
 
   <nav class="blog-nav" aria-label="Blog entries">
-    <p class="nav-label">Navigate</p>
     <ul class="blog-list" id="blog-list">
       <li>
         <a
@@ -215,15 +214,6 @@ const blogs = getAllBlogs().slice().reverse()
     flex-direction: column;
     gap: 0.5rem;
     min-height: 0;
-  }
-
-  .nav-label {
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 0 0.5rem;
   }
 
   .blog-list {
