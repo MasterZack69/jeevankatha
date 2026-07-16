@@ -51,7 +51,10 @@ const pageTitle =
             : 'light'
         }
         root.dataset.theme = theme
-        if (size === 'sm' || size === 'lg') root.dataset.fontsize = size
+        const level = Number(size)
+        if (Number.isInteger(level) && level >= 1 && level <= 6 && level !== 3) {
+          root.dataset.fontsize = String(level)
+        }
       })()
     </script>
   </head>

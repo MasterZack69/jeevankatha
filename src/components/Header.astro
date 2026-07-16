@@ -2,17 +2,23 @@
 ---
 
 <header class="topbar">
-  <p class="topbar-tagline">A life story, one entry at a time</p>
+  <a href="/" class="brand">
+    <span class="brand-mark" aria-hidden="true">ज</span>
+    <span class="brand-text">
+      <span class="brand-name">MasterZack&apos;s</span>
+      <span class="brand-sub">Jeevankatha</span>
+    </span>
+  </a>
 
   <div class="topbar-controls">
     <div class="fontsize-group" role="group" aria-label="Text size">
-      <button data-size="sm" class="size-btn" aria-label="Decrease text size" title="Smaller text">
+      <button id="size-down" class="size-btn" aria-label="Decrease text size" title="Smaller text">
         A<span class="size-sign">-</span>
       </button>
-      <button data-size="md" class="size-btn" aria-label="Default text size" title="Default text">
+      <button id="size-reset" class="size-btn" aria-label="Reset text size" title="Default text">
         A
       </button>
-      <button data-size="lg" class="size-btn" aria-label="Increase text size" title="Larger text">
+      <button id="size-up" class="size-btn" aria-label="Increase text size" title="Larger text">
         A<span class="size-sign">+</span>
       </button>
     </div>
@@ -39,33 +45,42 @@
 <script>
   const root = document.documentElement
 
-  // --- Font size controls ---
-  const sizeButtons =
-    document.querySelectorAll<HTMLButtonElement>('.size-btn')
+  // --- Progressive font size controls ---
+  // Levels 1..6, default 3. A- steps down, A+ steps up, A resets.
+  const MIN = 1
+  const MAX = 6
+  const DEFAULT = 3
 
-  function applySize(size: string) {
-    if (size === 'md') {
+  const downBtn = document.getElementById('size-down') as HTMLButtonElement | null
+  const resetBtn = document.getElementById('size-reset') as HTMLButtonElement | null
+  const upBtn = document.getElementById('size-up') as HTMLButtonElement | null
+
+  function currentLevel(): number {
+    const raw = Number(root.dataset.fontsize)
+    return Number.isInteger(raw) && raw >= MIN && raw <= MAX ? raw : DEFAULT
+  }
+
+  function applyLevel(level: number) {
+    const clamped = Math.min(MAX, Math.max(MIN, level))
+    if (clamped === DEFAULT) {
       delete root.dataset.fontsize
     } else {
-      root.dataset.fontsize = size
+      root.dataset.fontsize = String(clamped)
     }
     try {
-      localStorage.setItem('jk-fontsize', size)
+      localStorage.setItem('jk-fontsize', String(clamped))
     } catch {}
-    for (const btn of sizeButtons) {
-      btn.classList.toggle('active', btn.dataset.size === size)
-    }
+    if (downBtn) downBtn.disabled = clamped === MIN
+    if (upBtn) upBtn.disabled = clamped === MAX
+    resetBtn?.classList.toggle('active', clamped === DEFAULT)
   }
 
-  for (const btn of sizeButtons) {
-    btn.addEventListener('click', () => applySize(btn.dataset.size ?? 'md'))
-  }
+  downBtn?.addEventListener('click', () => applyLevel(currentLevel() - 1))
+  upBtn?.addEventListener('click', () => applyLevel(currentLevel() + 1))
+  resetBtn?.addEventListener('click', () => applyLevel(DEFAULT))
 
   // Reflect current state on load
-  const currentSize = root.dataset.fontsize ?? 'md'
-  for (const btn of sizeButtons) {
-    btn.classList.toggle('active', btn.dataset.size === currentSize)
-  }
+  applyLevel(currentLevel())
 
   // --- Theme toggle ---
   const themeBtn = document.getElementById('theme-toggle')
@@ -84,7 +99,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 0.875rem 1.5rem;
+    padding: 0.625rem 1.5rem;
     border-bottom: 1px solid var(--border);
     background-color: color-mix(in srgb, var(--bg) 85%, transparent);
     backdrop-filter: blur(8px);
@@ -94,15 +109,57 @@
     transition: background-color 0.25s ease, border-color 0.25s ease;
 
     @media (min-width: 768px) {
-      padding: 0.875rem 2.5rem;
+      padding: 0.625rem 2.5rem;
     }
   }
 
-  .topbar-tagline {
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    color: var(--text);
+    min-width: 0;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .brand-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-shrink: 0;
+    border-radius: calc(var(--radius) - 0.25rem);
+    background-color: var(--accent);
+    color: var(--bg);
     font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 0.875rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .brand-name {
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--muted);
+    line-height: 1.2;
+  }
+
+  .brand-sub {
+    font-family: var(--font-serif);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.2;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -132,7 +189,7 @@
     font-weight: 600;
     color: var(--muted);
     line-height: 1;
-    transition: background-color 0.15s ease, color 0.15s ease;
+    transition: background-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
 
     &:nth-child(1) {
       font-size: 0.75rem;
@@ -146,8 +203,14 @@
       font-size: 1rem;
     }
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: var(--surface-2);
+      color: var(--text);
+    }
+
+    &:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
     }
 
     &.active {

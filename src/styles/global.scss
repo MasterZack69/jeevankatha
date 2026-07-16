@@ -11,8 +11,8 @@
   --surface-2: #f3ecdf;
   --text: #2b2118;
   --muted: #8a7d6e;
-  --accent: #b4552d;
-  --accent-soft: rgba(180, 85, 45, 0.1);
+  --accent: #b42318;
+  --accent-soft: rgba(180, 35, 24, 0.1);
   --border: #e6dccb;
   --shadow: 0 1px 2px rgba(43, 33, 24, 0.05), 0 8px 24px rgba(43, 33, 24, 0.06);
   --radius: 0.75rem;
@@ -32,19 +32,29 @@ html[data-theme='dark'] {
   --surface-2: #27211a;
   --text: #ece3d5;
   --muted: #a2947f;
-  --accent: #e08d5f;
-  --accent-soft: rgba(224, 141, 95, 0.12);
+  --accent: #f26d63;
+  --accent-soft: rgba(242, 109, 99, 0.12);
   --border: #332b21;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
 
   color-scheme: dark;
 }
 
-html[data-fontsize='sm'] {
-  --prose-size: 0.9375rem;
+// Progressive reading scale: A- / A+ step through levels, A resets to 3
+html[data-fontsize='1'] {
+  --prose-size: 0.875rem;
 }
-html[data-fontsize='lg'] {
-  --prose-size: 1.25rem;
+html[data-fontsize='2'] {
+  --prose-size: 0.96875rem;
+}
+html[data-fontsize='4'] {
+  --prose-size: 1.1875rem;
+}
+html[data-fontsize='5'] {
+  --prose-size: 1.3125rem;
+}
+html[data-fontsize='6'] {
+  --prose-size: 1.4375rem;
 }
 
 // ---------- Reset & base ----------
