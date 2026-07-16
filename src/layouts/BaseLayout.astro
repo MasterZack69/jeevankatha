@@ -9,6 +9,7 @@ interface Props {
   description?: string
   activeSlug?: string
   showFontSize?: boolean
+  hideSidebar?: boolean
 }
 
 const {
@@ -16,6 +17,7 @@ const {
   description = 'A life story, told one entry at a time. Personal writings of MasterZack.',
   activeSlug,
   showFontSize = false,
+  hideSidebar = false,
 } = Astro.props
 
 const pageTitle =
@@ -59,10 +61,10 @@ const pageTitle =
     </script>
   </head>
   <body>
-    <div class="shell">
-      <Sidebar activeSlug={activeSlug} />
+    <div class:list={['shell', { 'shell--bare': hideSidebar }]}>
+      {!hideSidebar && <Sidebar activeSlug={activeSlug} />}
       <div class="main-col">
-        <Header showFontSize={showFontSize} />
+        <Header showFontSize={showFontSize} hideSidebar={hideSidebar} />
         <main class="content" id="main">
           <slot />
         </main>

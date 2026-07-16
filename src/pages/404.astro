@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout title="404 — Not Found" hideSidebar>
+  <section class="not-found">
+    <h1 class="nf-code">404</h1>
+    <p class="nf-message">Uh-oh, you appear to be lost little lamb.</p>
+    <a href="/" class="nf-link">Take me home &rarr;</a>
+  </section>
+</BaseLayout>
+
+<script>
+  if (location.pathname !== '/404') {
+    history.replaceState(null, '', '/404')
+  }
+</script>
+
+<style lang="scss">
+  .not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    min-height: 50vh;
+    text-align: center;
+  }
+
+  .nf-code {
+    font-family: var(--font-serif);
+    font-size: clamp(4rem, 10vw, 7rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--accent);
+  }
+
+  .nf-message {
+    font-size: 1.125rem;
+    color: var(--muted);
+    max-width: 24rem;
+  }
+
+  .nf-link {
+    margin-top: 0.5rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+    text-decoration: underline dashed;
+    text-underline-offset: 4px;
+    transition: color 0.15s ease;
+
+    &:hover {
+      text-decoration: underline dashed;
+      color: var(--accent);
+    }
+  }
+</style>
