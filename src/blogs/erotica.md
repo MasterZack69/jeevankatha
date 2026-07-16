@@ -1,0 +1,60 @@
+Title: Nicole's Night
+Date: 2026-04-10
+
+She is staring at her phone. She is Nicole. A petite lady alone in her house, in her room. Her husband is out again for a business trip. What business he had there, she didn't know nor care. Not anymore. It had been over half a year already since she had a proper fuck. Ever since her breadwinner got promoted, he was almost always out of the city doing business here and there.
+
+Nicole is tired now. She doesn't want anymore bread, not even money. Nicole is in her bed wearing a cute white satin gown covering her from shoulders to just above her knees. She doesn't want any sleep. She just wants a cock. Which is why despite it being 4 in the midnight, she is staring at her phone. A thumbsup emoji came in response to her message - "Meet me at my house"
+
+A message that was sent roughly 2 minutes ago. A message to her neighbour, Francis. She is nervous. She should be. Sending a late night message to a college boy, telling him to meet her. At Night. In her house. She didn't really realise what she had done. She is sleepy, and hungry... for cock. Her brain isn't functioning as it should be. Why else would a married woman do that? She would reach climax first before she could find the answer to such a mystery.
+
+The doorbell rings. "Idiot", she thought. Nicole hurried to answer the call, she opened the door before the idiot could ring for the second time.
+
+"You idiot! what are you even doing? The whole neighborhood could've heard that!"
+
+"Um..."
+
+"Argh! Just get in."
+
+Francis The Idiot gets in, not in her pussy, not yet. He takes a look around the house. Then he takes a look at her. He was not much taller than Nicole, the woman old enough to be her mother. Why was he even awake at this time? Of course, he was watching porn. Francis wonders if Nicole was also awake because of porn. Without wasting much time, he reels her in. Invading her mouth with his mouth while their chests try to wrestle with each other.
+
+Nicole breaks the violent kiss, "Hold on! Don't just start doing anything." She may have been the one to break it off, but she was the one most deeply regretting it. The kiss had reignited a fire in her clit which her husband had extinguished.
+
+"Um... isn't this why I am here, Nicole?", Francis is confused. He isn't very bright you see. Francis is famous for having an IQ of 57. If it wasn't for his looks, Nicole would never have considered to cheat on her husband with a man like Francis. No one knows how this person even managed to lose his virginity. It is a fucking mystery.
+
+"Well, yes. But before all this, shouldn't we talk first?", Nicole was no expert in extramarital affairs. She tries to maintain her composure and maturity despite her vagina telling her to just get it done.
+
+"Oh, fuck this.", He takes one of her hand and places it on his crotch. She could feel him alright. She could feel him all. Even with the jeans still on, Nicole could imagine this big beast ravaging her insides.
+
+"Oh yea, fuck this.", Her vagina was right. It was time to just get it done. She removes her hand from the crotch and leads Francis to her room. She throws him on the bed and gets on top of him. It was her time now, to invade his mouth with her mouth. She kisses him as she rubs his crotch with one hand. Their tongues danced, but her more ravishly.
+
+Francis uses his strength to switch the positions. He is on top of her now. Kissing and kissing as if he has nothing else to do. Except there is, oh yes, the pussy. While maintaining the dance of the tongues. He slides his right hand down with the intention of tearing her underwear. But wait, he makes an interesting discovery. He couldn't help but break the kiss and announce his discovery, "Oh, you are not wearing anything. I wasn't aware you were such a slut."
+
+"Just take me."
+
+Francis grabs the satin gown and removes it from her completely, he sees her bare breasts. And more interestingly, her bare pussy. Without further ado, he dives down. Francis begins his magic. Nicole can't help but release her moan. How does a person with the IQ of 57 manage to be such a genius in licking pussy. That's our 3rd mystery.
+
+"So good, so good, so good...", she found what she was missing with her husband. And she is enjoying it. Is it because Francis is too good at it? Or is it that this adultery with her neighbour excites her? Who cares really, Nicole certainly didn't.
+
+He stops licking and puts a finger inside her. She is wet alright. She is perfect for the entry. Francis removes his t-shirt and jeans in the blink of an eye. Of course he would, this night is an enjoyment anyone would ever crave for.
+
+Nicole sees his cock. Just as big as she had felt. She bites her lip and her eyes brighten up, "Oh honey, my sugary honey. Put it in".
+
+He wastes no time, why should he? All of him inside her in one go, in one second.
+
+"Fuck", they said in unison.
+
+"Fuck this, fuck this", he repeats the words as he repeats the strokes.
+
+"Oh fucking fuck fuck", she moans and moan. Nicole grabs her bedsheet tightly. She perhaps never thought she could hold anything this tightly. Francis was bigger. Her husband didn't compare. She needed this young cock and she is getting it now. All of it. Inside her.
+
+For Francis, nothing had ever felt better than Nicole's pussy sucking him with all its might. Her vaginal walls maintained a tight grip on him. He makes himself go faster. It feels better, He increases the speed even more, he is in heaven now. Frances reaches for Nicole, her mouth, her lips. She releases the bedsheet and wraps her hands around his back. They are kissing. They are fucking. They are fucking and kissing. They are kissing and fucking.
+
+At last, the time of Francis The Idiot arrives, "I will come."
+
+"Oh honey come, I am coming too".
+
+Their rhythmic strokes continue for a short while before they both say "fuck" again in unison.
+
+Francis comes a lot inside her. Nicole's stomach just got inflated a bit by his warm white sperm. He pulls out and Nicoles's pussy flushes a lot of his cum and her cum. It appears she was overflooded.
+
+He falls just beside her, having no more energy to continue. Nicole gasps and gasps. She looks at him, at Francis. And she decides to not let this be their only time.
