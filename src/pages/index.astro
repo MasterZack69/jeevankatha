@@ -4,6 +4,7 @@ import { getAllBlogs } from '../lib/blogs'
 
 const blogs = getAllBlogs()
 const [latest, ...rest] = blogs
+const earlier = rest.slice(0, 2)
 ---
 
 <BaseLayout>
@@ -32,13 +33,13 @@ const [latest, ...rest] = blogs
   }
 
   {
-    rest.length > 0 && (
+    earlier.length > 0 && (
       <section class="archive" aria-labelledby="archive-heading">
         <h2 class="section-label" id="archive-heading">
           Earlier entries
         </h2>
         <ul class="archive-list">
-          {rest.map((blog) => (
+          {earlier.map((blog) => (
             <li>
               <a href={`/blog/${blog.slug}/`} class="archive-card">
                 <div class="archive-text">
