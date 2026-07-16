@@ -1,0 +1,339 @@
+---
+import { getAllBlogs } from '../lib/blogs'
+
+interface Props {
+  activeSlug?: string
+}
+
+const { activeSlug } = Astro.props
+const blogs = getAllBlogs()
+---
+
+<button
+  class="sidebar-toggle"
+  id="sidebar-toggle"
+  aria-label="Toggle blog list"
+  aria-expanded="false"
+  aria-controls="sidebar"
+>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+    <line x1="4" y1="7" x2="20" y2="7"></line>
+    <line x1="4" y1="12" x2="20" y2="12"></line>
+    <line x1="4" y1="17" x2="20" y2="17"></line>
+  </svg>
+</button>
+
+<div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+<aside class="sidebar" id="sidebar">
+  <a href="/" class="brand">
+    <span class="brand-mark" aria-hidden="true">ज</span>
+    <span class="brand-text">
+      <span class="brand-name">MasterZack&apos;s</span>
+      <span class="brand-sub">Jeevankatha</span>
+    </span>
+  </a>
+
+  <div class="search-wrap">
+    <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"></circle>
+      <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
+    </svg>
+    <input
+      type="search"
+      id="blog-search"
+      placeholder="Search entries…"
+      aria-label="Search blog entries"
+      autocomplete="off"
+    />
+  </div>
+
+  <nav class="blog-nav" aria-label="Blog entries">
+    <p class="nav-label">Entries <span id="entry-count">({blogs.length})</span></p>
+    <ul class="blog-list" id="blog-list">
+      {
+        blogs.map((blog) => (
+          <li>
+            <a
+              href={`/blog/${blog.slug}/`}
+              class:list={['blog-link', { active: blog.slug === activeSlug }]}
+              data-title={blog.title.toLowerCase()}
+              aria-current={blog.slug === activeSlug ? 'page' : undefined}
+            >
+              <span class="blog-link-title">{blog.title}</span>
+              <time class="blog-link-date" datetime={blog.date}>
+                {blog.dateFormatted}
+              </time>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="no-results" id="no-results" hidden>No entries match your search.</p>
+  </nav>
+</aside>
+
+<script>
+  // --- Search filtering ---
+  const search = document.getElementById('blog-search') as HTMLInputElement | null
+  const list = document.getElementById('blog-list')
+  const noResults = document.getElementById('no-results')
+  const count = document.getElementById('entry-count')
+
+  if (search && list) {
+    const items = Array.from(list.querySelectorAll('li'))
+    search.addEventListener('input', () => {
+      const q = search.value.trim().toLowerCase()
+      let visible = 0
+      for (const li of items) {
+        const link = li.querySelector<HTMLAnchorElement>('.blog-link')
+        const match = !q || (link?.dataset.title ?? '').includes(q)
+        li.hidden = !match
+        if (match) visible++
+      }
+      if (noResults) noResults.hidden = visible > 0
+      if (count) count.textContent = `(${visible})`
+    })
+  }
+
+  // --- Mobile drawer ---
+  const toggle = document.getElementById('sidebar-toggle')
+  const sidebar = document.getElementById('sidebar')
+  const scrim = document.getElementById('sidebar-scrim')
+
+  function setOpen(open: boolean) {
+    sidebar?.classList.toggle('open', open)
+    scrim?.classList.toggle('visible', open)
+    toggle?.setAttribute('aria-expanded', String(open))
+  }
+
+  toggle?.addEventListener('click', () =>
+    setOpen(!sidebar?.classList.contains('open'))
+  )
+  scrim?.addEventListener('click', () => setOpen(false))
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setOpen(false)
+  })
+</script>
+
+<style lang="scss">
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 18.5rem;
+    flex-shrink: 0;
+    padding: 2rem 1.25rem;
+    background-color: var(--surface);
+    border-right: 1px solid var(--border);
+    height: 100dvh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text);
+    padding: 0.25rem;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .brand-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex-shrink: 0;
+    border-radius: var(--radius);
+    background-color: var(--accent);
+    color: var(--bg);
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .brand-name {
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .brand-sub {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .search-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 0.875rem;
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  #blog-search {
+    width: 100%;
+    padding: 0.625rem 0.875rem 0.625rem 2.5rem;
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) * 2);
+    background-color: var(--bg);
+    color: var(--text);
+    font-size: 0.875rem;
+    transition: border-color 0.15s ease;
+
+    &::placeholder {
+      color: var(--muted);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+  }
+
+  .blog-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 0;
+  }
+
+  .nav-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 0.5rem;
+  }
+
+  .blog-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .blog-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    padding: 0.625rem 0.75rem;
+    border-radius: calc(var(--radius) - 0.25rem);
+    color: var(--text);
+    border-left: 2px solid transparent;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: var(--surface-2);
+      text-decoration: none;
+    }
+
+    &.active {
+      background-color: var(--accent-soft);
+      border-left-color: var(--accent);
+
+      .blog-link-title {
+        color: var(--accent);
+      }
+    }
+  }
+
+  .blog-link-title {
+    font-family: var(--font-serif);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+
+  .blog-link-date {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .no-results {
+    font-size: 0.875rem;
+    color: var(--muted);
+    padding: 0.75rem 0.5rem;
+  }
+
+  .sidebar-toggle {
+    display: none;
+    position: fixed;
+    bottom: 1.25rem;
+    left: 1.25rem;
+    z-index: 60;
+    width: 3rem;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--accent);
+    color: var(--bg);
+    box-shadow: var(--shadow);
+  }
+
+  .sidebar-scrim {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background-color: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+
+    &.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  @media (max-width: 899px) {
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 50;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      box-shadow: var(--shadow);
+
+      &.open {
+        transform: translateX(0);
+      }
+    }
+
+    .sidebar-toggle {
+      display: flex;
+    }
+
+    .sidebar-scrim {
+      display: block;
+    }
+  }
+</style>

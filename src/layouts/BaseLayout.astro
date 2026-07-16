@@ -1,0 +1,70 @@
+---
+import '../styles/global.scss'
+import Sidebar from '../components/Sidebar.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+
+interface Props {
+  title?: string
+  description?: string
+  activeSlug?: string
+}
+
+const {
+  title = "MasterZack's Jeevankatha",
+  description = 'A life story, told one entry at a time. Personal writings of MasterZack.',
+  activeSlug,
+} = Astro.props
+
+const pageTitle =
+  title === "MasterZack's Jeevankatha"
+    ? title
+    : `${title} — MasterZack's Jeevankatha`
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{pageTitle}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Inter:wght@400..700&family=Noto+Serif+Devanagari:wght@400..600&display=swap"
+    />
+    <script is:inline>
+      // Apply saved theme + font size before paint to avoid flashes
+      ;(() => {
+        const root = document.documentElement
+        let theme = null
+        let size = null
+        try {
+          theme = localStorage.getItem('jk-theme')
+          size = localStorage.getItem('jk-fontsize')
+        } catch {}
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light'
+        }
+        root.dataset.theme = theme
+        if (size === 'sm' || size === 'lg') root.dataset.fontsize = size
+      })()
+    </script>
+  </head>
+  <body>
+    <div class="shell">
+      <Sidebar activeSlug={activeSlug} />
+      <div class="main-col">
+        <Header />
+        <main class="content" id="main">
+          <slot />
+        </main>
+        <Footer />
+      </div>
+    </div>
+  </body>
+</html>

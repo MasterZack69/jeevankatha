@@ -1,0 +1,194 @@
+---
+---
+
+<header class="topbar">
+  <p class="topbar-tagline">A life story, one entry at a time</p>
+
+  <div class="topbar-controls">
+    <div class="fontsize-group" role="group" aria-label="Text size">
+      <button data-size="sm" class="size-btn" aria-label="Decrease text size" title="Smaller text">
+        A<span class="size-sign">-</span>
+      </button>
+      <button data-size="md" class="size-btn" aria-label="Default text size" title="Default text">
+        A
+      </button>
+      <button data-size="lg" class="size-btn" aria-label="Increase text size" title="Larger text">
+        A<span class="size-sign">+</span>
+      </button>
+    </div>
+
+    <button id="theme-toggle" class="theme-btn" aria-label="Toggle light and dark theme" title="Toggle theme">
+      <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4.5"></circle>
+        <line x1="12" y1="2" x2="12" y2="4.5"></line>
+        <line x1="12" y1="19.5" x2="12" y2="22"></line>
+        <line x1="2" y1="12" x2="4.5" y2="12"></line>
+        <line x1="19.5" y1="12" x2="22" y2="12"></line>
+        <line x1="4.9" y1="4.9" x2="6.7" y2="6.7"></line>
+        <line x1="17.3" y1="17.3" x2="19.1" y2="19.1"></line>
+        <line x1="4.9" y1="19.1" x2="6.7" y2="17.3"></line>
+        <line x1="17.3" y1="6.7" x2="19.1" y2="4.9"></line>
+      </svg>
+      <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"></path>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<script>
+  const root = document.documentElement
+
+  // --- Font size controls ---
+  const sizeButtons =
+    document.querySelectorAll<HTMLButtonElement>('.size-btn')
+
+  function applySize(size: string) {
+    if (size === 'md') {
+      delete root.dataset.fontsize
+    } else {
+      root.dataset.fontsize = size
+    }
+    try {
+      localStorage.setItem('jk-fontsize', size)
+    } catch {}
+    for (const btn of sizeButtons) {
+      btn.classList.toggle('active', btn.dataset.size === size)
+    }
+  }
+
+  for (const btn of sizeButtons) {
+    btn.addEventListener('click', () => applySize(btn.dataset.size ?? 'md'))
+  }
+
+  // Reflect current state on load
+  const currentSize = root.dataset.fontsize ?? 'md'
+  for (const btn of sizeButtons) {
+    btn.classList.toggle('active', btn.dataset.size === currentSize)
+  }
+
+  // --- Theme toggle ---
+  const themeBtn = document.getElementById('theme-toggle')
+  themeBtn?.addEventListener('click', () => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark'
+    root.dataset.theme = next
+    try {
+      localStorage.setItem('jk-theme', next)
+    } catch {}
+  })
+</script>
+
+<style lang="scss">
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    background-color: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+
+    @media (min-width: 768px) {
+      padding: 0.875rem 2.5rem;
+    }
+  }
+
+  .topbar-tagline {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.875rem;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .topbar-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .fontsize-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) * 2);
+    overflow: hidden;
+    background-color: var(--surface);
+  }
+
+  .size-btn {
+    display: flex;
+    align-items: baseline;
+    padding: 0.375rem 0.75rem;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    color: var(--muted);
+    line-height: 1;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:nth-child(1) {
+      font-size: 0.75rem;
+    }
+    &:nth-child(2) {
+      font-size: 0.875rem;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+    &:nth-child(3) {
+      font-size: 1rem;
+    }
+
+    &:hover {
+      background-color: var(--surface-2);
+    }
+
+    &.active {
+      background-color: var(--accent);
+      color: var(--bg);
+    }
+  }
+
+  .size-sign {
+    font-size: 0.85em;
+  }
+
+  .theme-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background-color: var(--surface);
+    color: var(--muted);
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background-color: var(--surface-2);
+      color: var(--text);
+    }
+  }
+
+  // Show moon in light mode, sun in dark mode (dark-mode rules are global below)
+  .icon-sun {
+    display: none;
+  }
+</style>
+
+<style lang="scss" is:global>
+  html[data-theme='dark'] .theme-btn .icon-sun {
+    display: block;
+  }
+  html[data-theme='dark'] .theme-btn .icon-moon {
+    display: none;
+  }
+</style>

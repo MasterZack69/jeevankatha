@@ -1,0 +1,150 @@
+// ============================================
+// MasterZack's Jeevankatha — global styles
+// Palette (5): warm cream, warm ink, terracotta,
+// soft sand, muted taupe
+// ============================================
+
+:root {
+  // Light theme
+  --bg: #faf6ef;
+  --surface: #fffdf8;
+  --surface-2: #f3ecdf;
+  --text: #2b2118;
+  --muted: #8a7d6e;
+  --accent: #b4552d;
+  --accent-soft: rgba(180, 85, 45, 0.1);
+  --border: #e6dccb;
+  --shadow: 0 1px 2px rgba(43, 33, 24, 0.05), 0 8px 24px rgba(43, 33, 24, 0.06);
+  --radius: 0.75rem;
+
+  // Reading scale (controlled by A- / A / A+)
+  --prose-size: 1.0625rem;
+
+  --font-serif: 'Lora', 'Lora Fallback', Georgia, serif;
+  --font-sans: 'Inter', 'Inter Fallback', system-ui, sans-serif;
+
+  color-scheme: light;
+}
+
+html[data-theme='dark'] {
+  --bg: #16120e;
+  --surface: #1e1913;
+  --surface-2: #27211a;
+  --text: #ece3d5;
+  --muted: #a2947f;
+  --accent: #e08d5f;
+  --accent-soft: rgba(224, 141, 95, 0.12);
+  --border: #332b21;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+
+  color-scheme: dark;
+}
+
+html[data-fontsize='sm'] {
+  --prose-size: 0.9375rem;
+}
+html[data-fontsize='lg'] {
+  --prose-size: 1.25rem;
+}
+
+// ---------- Reset & base ----------
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  background-color: var(--bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--text);
+  background-color: var(--bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input {
+  font: inherit;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+// ---------- App shell ----------
+
+.shell {
+  display: flex;
+  min-height: 100dvh;
+}
+
+.main-col {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.content {
+  flex: 1;
+  width: 100%;
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+
+  @media (min-width: 768px) {
+    padding: 3.5rem 2.5rem 5rem;
+  }
+}

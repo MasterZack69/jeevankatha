@@ -1,0 +1,273 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getAllBlogs } from '../../lib/blogs'
+
+export function getStaticPaths() {
+  const blogs = getAllBlogs()
+  return blogs.map((blog, i) => ({
+    params: { slug: blog.slug },
+    props: {
+      blog,
+      // blogs are sorted newest-first; "prev" = older, "next" = newer
+      prev: blogs[i + 1] ?? null,
+      next: blogs[i - 1] ?? null,
+    },
+  }))
+}
+
+const { blog, prev, next } = Astro.props
+---
+
+<BaseLayout title={blog.title} description={blog.excerpt} activeSlug={blog.slug}>
+  <article class="post">
+    <header class="post-header">
+      <time class="post-date" datetime={blog.date}>{blog.dateFormatted}</time>
+      <h1 class="post-title">{blog.title}</h1>
+      <p class="post-meta">{blog.readingMinutes} min read</p>
+    </header>
+
+    <div class="prose" set:html={blog.html} />
+  </article>
+
+  <nav class="post-nav" aria-label="Previous and next entries">
+    {
+      prev ? (
+        <a href={`/blog/${prev.slug}/`} class="post-nav-link prev" id="nav-prev">
+          <span class="post-nav-label">&larr; Previous <kbd>Alt</kbd>+<kbd>&larr;</kbd></span>
+          <span class="post-nav-title">{prev.title}</span>
+        </a>
+      ) : (
+        <span class="post-nav-spacer" />
+      )
+    }
+    {
+      next ? (
+        <a href={`/blog/${next.slug}/`} class="post-nav-link next" id="nav-next">
+          <span class="post-nav-label">Next &rarr; <kbd>Alt</kbd>+<kbd>&rarr;</kbd></span>
+          <span class="post-nav-title">{next.title}</span>
+        </a>
+      ) : (
+        <span class="post-nav-spacer" />
+      )
+    }
+  </nav>
+</BaseLayout>
+
+<script>
+  // Alt + ArrowLeft / ArrowRight navigates to previous / next entry
+  document.addEventListener('keydown', (e) => {
+    if (!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return
+    if (e.key === 'ArrowLeft') {
+      const prev = document.getElementById('nav-prev') as HTMLAnchorElement | null
+      if (prev) {
+        e.preventDefault()
+        window.location.href = prev.href
+      }
+    } else if (e.key === 'ArrowRight') {
+      const next = document.getElementById('nav-next') as HTMLAnchorElement | null
+      if (next) {
+        e.preventDefault()
+        window.location.href = next.href
+      }
+    }
+  })
+</script>
+
+<style lang="scss">
+  .post-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+
+  .post-date {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .post-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.875rem, 4.5vw, 2.75rem);
+    font-weight: 600;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  .post-meta {
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  // ---------- Markdown prose ----------
+
+  .prose {
+    font-family: var(--font-serif);
+    font-size: var(--prose-size);
+    line-height: 1.75;
+    transition: font-size 0.15s ease;
+
+    :global(h2) {
+      font-size: 1.5em;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-top: 2em;
+      margin-bottom: 0.6em;
+      text-wrap: balance;
+    }
+
+    :global(h3) {
+      font-size: 1.2em;
+      font-weight: 600;
+      line-height: 1.35;
+      margin-top: 1.6em;
+      margin-bottom: 0.5em;
+    }
+
+    :global(p) {
+      margin-bottom: 1.1em;
+      text-wrap: pretty;
+    }
+
+    :global(ul),
+    :global(ol) {
+      margin-bottom: 1.1em;
+      padding-left: 1.5em;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4em;
+    }
+
+    :global(blockquote) {
+      margin: 1.5em 0;
+      padding: 0.75em 1.25em;
+      border-left: 3px solid var(--accent);
+      background-color: var(--accent-soft);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-style: italic;
+      color: var(--text);
+
+      :global(p:last-child) {
+        margin-bottom: 0;
+      }
+    }
+
+    :global(code) {
+      font-family: var(--font-sans);
+      font-size: 0.85em;
+      background-color: var(--surface-2);
+      padding: 0.15em 0.4em;
+      border-radius: 0.3em;
+    }
+
+    :global(pre) {
+      background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1em 1.25em;
+      overflow-x: auto;
+      margin-bottom: 1.1em;
+      font-size: 0.85em;
+      line-height: 1.6;
+
+      :global(code) {
+        background: none;
+        padding: 0;
+        font-size: 1em;
+      }
+    }
+
+    :global(strong) {
+      font-weight: 700;
+    }
+
+    :global(hr) {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2em 0;
+    }
+
+    :global(img) {
+      border-radius: var(--radius);
+      margin: 1.5em 0;
+    }
+  }
+
+  // ---------- Prev / Next nav ----------
+
+  .post-nav {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+
+    @media (min-width: 640px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .post-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    padding: 1.125rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--surface);
+    color: var(--text);
+    transition: border-color 0.2s ease;
+
+    &:hover {
+      text-decoration: none;
+      border-color: var(--accent);
+    }
+
+    &.next {
+      text-align: right;
+      align-items: flex-end;
+    }
+  }
+
+  .post-nav-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+
+    kbd {
+      font-family: var(--font-sans);
+      font-size: 0.9em;
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
+      background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 0.25em;
+      padding: 0.05em 0.35em;
+    }
+  }
+
+  .post-nav-title {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    line-height: 1.3;
+    text-wrap: balance;
+    color: var(--accent);
+  }
+
+  .post-nav-spacer {
+    display: none;
+
+    @media (min-width: 640px) {
+      display: block;
+    }
+  }
+</style>
