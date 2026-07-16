@@ -53,6 +53,7 @@ const blogs = getAllBlogs().slice().reverse()
               href={`/blog/${blog.slug}/`}
               class:list={['blog-link', { active: blog.slug === activeSlug }]}
               data-title={blog.title.toLowerCase()}
+              data-date={blog.dateFormatted.toLowerCase()}
               aria-current={blog.slug === activeSlug ? 'page' : undefined}
             >
               <span class="blog-link-title">{blog.title}</span>
@@ -82,11 +83,12 @@ const blogs = getAllBlogs().slice().reverse()
       for (const li of items) {
         const link = li.querySelector<HTMLAnchorElement>('.blog-link')
         const title = link?.dataset.title
+        const date = link?.dataset.date
         if (!title) {
           li.hidden = false
           continue
         }
-        const match = !q || title.includes(q)
+        const match = !q || title.includes(q) || (date && date.includes(q))
         li.hidden = !match
         if (match) visible++
       }
