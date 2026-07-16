@@ -11,8 +11,8 @@
   --surface-2: #f3ecdf;
   --text: #2b2118;
   --muted: #8a7d6e;
-  --accent: #b42318;
-  --accent-soft: rgba(180, 35, 24, 0.1);
+  --accent: #DE3163;
+  --accent-soft: rgba(222, 49, 99, 0.1);
   --border: #e6dccb;
   --shadow: 0 1px 2px rgba(43, 33, 24, 0.05), 0 8px 24px rgba(43, 33, 24, 0.06);
   --radius: 0.75rem;
@@ -20,27 +20,30 @@
   // Reading scale (controlled by A- / A / A+)
   --prose-size: 1.0625rem;
 
-  --font-serif: 'Lora', 'Lora Fallback', 'Noto Serif Devanagari', Georgia, serif;
-  --font-sans: 'Inter', 'Inter Fallback', 'Noto Serif Devanagari', system-ui, sans-serif;
+  --font-serif: 'Lora', 'Lora Fallback', Georgia, serif;
+  --font-sans: 'Inter', 'Inter Fallback', system-ui, sans-serif;
 
   color-scheme: light;
 }
 
 html[data-theme='dark'] {
-  --bg: #16120e;
-  --surface: #1e1913;
-  --surface-2: #27211a;
+  --bg: #0d0a08;
+  --surface: #14110e;
+  --surface-2: #1c1814;
   --text: #ece3d5;
-  --muted: #a2947f;
-  --accent: #f26d63;
-  --accent-soft: rgba(242, 109, 99, 0.12);
-  --border: #332b21;
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+  --muted: #8a7d6e;
+  --accent: #DE3163;
+  --accent-soft: rgba(222, 49, 99, 0.12);
+  --border: #2a241e;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.5);
 
   color-scheme: dark;
 }
 
 // Progressive reading scale: A- / A+ step through levels, A resets to 3
+html[data-fontsize='0'] {
+  --prose-size: 0.78125rem;
+}
 html[data-fontsize='1'] {
   --prose-size: 0.875rem;
 }

@@ -6,26 +6,20 @@ interface Props {
 }
 
 const { activeSlug } = Astro.props
-const blogs = getAllBlogs()
+const blogs = getAllBlogs().slice().reverse()
 ---
-
-<button
-  class="sidebar-toggle"
-  id="sidebar-toggle"
-  aria-label="Toggle blog list"
-  aria-expanded="false"
-  aria-controls="sidebar"
->
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-    <line x1="4" y1="7" x2="20" y2="7"></line>
-    <line x1="4" y1="12" x2="20" y2="12"></line>
-    <line x1="4" y1="17" x2="20" y2="17"></line>
-  </svg>
-</button>
 
 <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
 
 <aside class="sidebar" id="sidebar">
+  <div class="sidebar-top">
+    <button id="sidebar-close" class="sidebar-close-btn" aria-label="Close blog list">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
   <div class="search-wrap">
     <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
       <circle cx="11" cy="11" r="7"></circle>
@@ -41,8 +35,18 @@ const blogs = getAllBlogs()
   </div>
 
   <nav class="blog-nav" aria-label="Blog entries">
-    <p class="nav-label">Entries <span id="entry-count">({blogs.length})</span></p>
+    <p class="nav-label">Navigate</p>
     <ul class="blog-list" id="blog-list">
+      <li>
+        <a
+          href="/"
+          class:list={['blog-link', { active: !activeSlug }]}
+          aria-current={!activeSlug ? 'page' : undefined}
+        >
+          <span class="blog-link-title">Home</span>
+        </a>
+      </li>
+      <li class="nav-divider" role="separator"></li>
       {
         blogs.map((blog) => (
           <li>
@@ -70,7 +74,6 @@ const blogs = getAllBlogs()
   const search = document.getElementById('blog-search') as HTMLInputElement | null
   const list = document.getElementById('blog-list')
   const noResults = document.getElementById('no-results')
-  const count = document.getElementById('entry-count')
 
   if (search && list) {
     const items = Array.from(list.querySelectorAll('li'))
@@ -79,33 +82,61 @@ const blogs = getAllBlogs()
       let visible = 0
       for (const li of items) {
         const link = li.querySelector<HTMLAnchorElement>('.blog-link')
-        const match = !q || (link?.dataset.title ?? '').includes(q)
+        const title = link?.dataset.title
+        if (!title) {
+          li.hidden = false
+          continue
+        }
+        const match = !q || title.includes(q)
         li.hidden = !match
         if (match) visible++
       }
       if (noResults) noResults.hidden = visible > 0
-      if (count) count.textContent = `(${visible})`
     })
   }
 
   // --- Mobile drawer ---
-  const toggle = document.getElementById('sidebar-toggle')
   const sidebar = document.getElementById('sidebar')
   const scrim = document.getElementById('sidebar-scrim')
 
   function setOpen(open: boolean) {
     sidebar?.classList.toggle('open', open)
     scrim?.classList.toggle('visible', open)
-    toggle?.setAttribute('aria-expanded', String(open))
+    const toggle = document.getElementById('sidebar-toggle')
+    if (toggle) {
+      toggle.setAttribute('aria-expanded', String(open))
+      toggle.setAttribute('aria-label', open ? 'Close blog list' : 'Open blog list')
+    }
   }
 
-  toggle?.addEventListener('click', () =>
+  document.addEventListener('sidebar:toggle', () => {
     setOpen(!sidebar?.classList.contains('open'))
-  )
+  })
   scrim?.addEventListener('click', () => setOpen(false))
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') setOpen(false)
   })
+
+  document.getElementById('sidebar-close')?.addEventListener('click', () => setOpen(false))
+
+  // --- Swipe to close ---
+  let touchStartX = 0
+  let touchDeltaX = 0
+  const SWIPE_THRESHOLD = 80
+
+  sidebar?.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX
+  }, { passive: true })
+
+  sidebar?.addEventListener('touchmove', (e) => {
+    touchDeltaX = e.changedTouches[0].screenX - touchStartX
+  }, { passive: true })
+
+  sidebar?.addEventListener('touchend', () => {
+    if (touchDeltaX < -SWIPE_THRESHOLD) setOpen(false)
+    touchStartX = 0
+    touchDeltaX = 0
+  }, { passive: true })
 </script>
 
 <style lang="scss">
@@ -123,6 +154,27 @@ const blogs = getAllBlogs()
     top: 0;
     overflow-y: auto;
     transition: background-color 0.25s ease, border-color 0.25s ease;
+  }
+
+  .sidebar-top {
+    display: none;
+    justify-content: flex-end;
+  }
+
+  .sidebar-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    color: var(--muted);
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background-color: var(--surface-2);
+      color: var(--text);
+    }
   }
 
   .search-wrap {
@@ -186,23 +238,46 @@ const blogs = getAllBlogs()
     display: flex;
     flex-direction: column;
     gap: 0.125rem;
-    padding: 0.625rem 0.75rem;
+    padding: 0.625rem 0.75rem 0.625rem 1rem;
     border-radius: calc(var(--radius) - 0.25rem);
     color: var(--text);
     border-left: 2px solid transparent;
-    transition: background-color 0.15s ease;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: calc(var(--radius) - 0.25rem);
+      background: linear-gradient(135deg, var(--accent-soft) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
 
     &:hover {
       background-color: var(--surface-2);
+      border-left-color: var(--accent);
+      transform: translateX(4px);
       text-decoration: none;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+
+      &::before {
+        opacity: 1;
+      }
+
+      .blog-link-title {
+        color: var(--accent);
+      }
     }
 
     &.active {
-      background-color: var(--accent-soft);
       border-left-color: var(--accent);
 
       .blog-link-title {
         color: var(--accent);
+        font-weight: 600;
       }
     }
   }
@@ -220,26 +295,17 @@ const blogs = getAllBlogs()
     color: var(--muted);
   }
 
+  .nav-divider {
+    height: 1px;
+    background-color: var(--border);
+    margin: 0.25rem 0.5rem;
+    list-style: none;
+  }
+
   .no-results {
     font-size: 0.875rem;
     color: var(--muted);
     padding: 0.75rem 0.5rem;
-  }
-
-  .sidebar-toggle {
-    display: none;
-    position: fixed;
-    bottom: 1.25rem;
-    left: 1.25rem;
-    z-index: 60;
-    width: 3rem;
-    height: 3rem;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background-color: var(--accent);
-    color: var(--bg);
-    box-shadow: var(--shadow);
   }
 
   .sidebar-scrim {
@@ -273,12 +339,12 @@ const blogs = getAllBlogs()
       }
     }
 
-    .sidebar-toggle {
-      display: flex;
-    }
-
     .sidebar-scrim {
       display: block;
+    }
+
+    .sidebar-top {
+      display: flex;
     }
   }
 </style>

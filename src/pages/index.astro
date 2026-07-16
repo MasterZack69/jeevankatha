@@ -8,7 +8,7 @@ const [latest, ...rest] = blogs
 
 <BaseLayout>
   <section class="hero">
-    <p class="hero-eyebrow">जीवनकथा &middot; A Life Story</p>
+    <p class="hero-eyebrow">A Life Story</p>
     <h1 class="hero-title">Welcome to MasterZack&apos;s Jeevankatha</h1>
     <p class="hero-sub">
       Notes on books, anime, code, and the quiet business of being alive.
@@ -29,8 +29,7 @@ const [latest, ...rest] = blogs
           <h3 class="latest-title">{latest.title}</h3>
           <p class="latest-excerpt">{latest.excerpt}</p>
           <span class="card-meta">
-            {latest.readingMinutes} min read &middot; Read entry &rarr;
-          </span>
+          <span class="card-meta">Read entry &rarr;</span>
         </a>
       </section>
     )
@@ -54,7 +53,6 @@ const [latest, ...rest] = blogs
                   <time class="card-date" datetime={blog.date}>
                     {blog.dateFormatted}
                   </time>
-                  <span class="card-meta">{blog.readingMinutes} min read</span>
                 </div>
               </a>
             </li>

@@ -18,12 +18,11 @@ export function getStaticPaths() {
 const { blog, prev, next } = Astro.props
 ---
 
-<BaseLayout title={blog.title} description={blog.excerpt} activeSlug={blog.slug}>
+<BaseLayout title={blog.title} description={blog.excerpt} activeSlug={blog.slug} showFontSize>
   <article class="post">
     <header class="post-header">
       <time class="post-date" datetime={blog.date}>{blog.dateFormatted}</time>
       <h1 class="post-title">{blog.title}</h1>
-      <p class="post-meta">{blog.readingMinutes} min read</p>
     </header>
 
     <div class="prose" set:html={blog.html} />
@@ -33,7 +32,7 @@ const { blog, prev, next } = Astro.props
     {
       prev ? (
         <a href={`/blog/${prev.slug}/`} class="post-nav-link prev" id="nav-prev">
-          <span class="post-nav-label">&larr; Previous <kbd>Alt</kbd>+<kbd>&larr;</kbd></span>
+          <span class="post-nav-label">&larr; Previous</span>
           <span class="post-nav-title">{prev.title}</span>
         </a>
       ) : (
@@ -43,7 +42,7 @@ const { blog, prev, next } = Astro.props
     {
       next ? (
         <a href={`/blog/${next.slug}/`} class="post-nav-link next" id="nav-next">
-          <span class="post-nav-label">Next &rarr; <kbd>Alt</kbd>+<kbd>&rarr;</kbd></span>
+          <span class="post-nav-label">Next &rarr;</span>
           <span class="post-nav-title">{next.title}</span>
         </a>
       ) : (
@@ -97,11 +96,6 @@ const { blog, prev, next } = Astro.props
     font-weight: 600;
     line-height: 1.15;
     text-wrap: balance;
-  }
-
-  .post-meta {
-    font-size: 0.875rem;
-    color: var(--muted);
   }
 
   // ---------- Markdown prose ----------
