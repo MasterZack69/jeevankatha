@@ -39,10 +39,19 @@ const blogs = getAllBlogs().slice().reverse()
       <li>
         <a
           href="/"
-          class:list={['blog-link', { active: !activeSlug }]}
-          aria-current={!activeSlug ? 'page' : undefined}
+          class:list={['blog-link', { active: Astro.url.pathname === '/' }]}
+          aria-current={Astro.url.pathname === '/' ? 'page' : undefined}
         >
           <span class="blog-link-title">Home</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="/quotes/"
+          class:list={['blog-link', { active: Astro.url.pathname.startsWith('/quotes') }]}
+          aria-current={Astro.url.pathname.startsWith('/quotes') ? 'page' : undefined}
+        >
+          <span class="blog-link-title">Quotes</span>
         </a>
       </li>
       <li class="nav-divider" role="separator"></li>
