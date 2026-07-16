@@ -54,22 +54,18 @@ const { blog, prev, next } = Astro.props
 
 <script>
   // Alt + ArrowLeft / ArrowRight navigates to previous / next entry
-  document.addEventListener('keydown', (e) => {
+  window.addEventListener('keydown', (e) => {
     if (!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return
     if (e.key === 'ArrowLeft') {
+      e.preventDefault()
       const prevEl = document.getElementById('nav-prev') as HTMLAnchorElement | null
-      if (prevEl) {
-        e.preventDefault()
-        window.location.href = prevEl.href
-      }
+      if (prevEl) location.href = prevEl.href
     } else if (e.key === 'ArrowRight') {
+      e.preventDefault()
       const nextEl = document.getElementById('nav-next') as HTMLAnchorElement | null
-      if (nextEl) {
-        e.preventDefault()
-        window.location.href = nextEl.href
-      }
+      if (nextEl) location.href = nextEl.href
     }
-  })
+  }, { capture: true })
 </script>
 
 <style lang="scss">
