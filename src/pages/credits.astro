@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout title="Credits">
+  <section class="credits-page">
+    <h1 class="credits-heading">Credits</h1>
+    <p class="credits-placeholder">Made in ❤︎⁠ with Claude Fable 5 and DeepSeek V4 Flash</p>
+  </section>
+</BaseLayout>
+
+<style lang="scss">
+  .credits-heading {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 600;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+
+  .credits-placeholder {
+    font-size: 1.0625rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+</style>
