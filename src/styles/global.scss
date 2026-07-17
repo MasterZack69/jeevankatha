@@ -4,6 +4,19 @@
 // soft sand, muted taupe
 // ============================================
 
+@font-face {
+  font-family: 'Lora Fallback';
+  src: local('Georgia');
+  size-adjust: 105%;
+  ascent-override: 95%;
+}
+
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('system-ui');
+  size-adjust: 98%;
+}
+
 :root {
   // Light theme
   --bg: #faf6ef;
@@ -83,7 +96,6 @@ body {
   background-color: var(--bg);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 img,

@@ -14,7 +14,7 @@ const earlier = rest.slice(0, 2)
     <p class="hero-sub">O mortal fool, beware of the Yap. Ye have been warned.</p>
   </section>
 
-  <img src="/something.webp" alt="" class="hero-image" loading="eager" />
+  <img src="/something.webp" alt="" class="hero-image" loading="eager" fetchpriority="high" width="1200" height="1600" />
 
   {
     latest && (
@@ -95,6 +95,8 @@ const earlier = rest.slice(0, 2)
   .hero-image {
     display: block;
     width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
     border-radius: var(--radius);
     margin-bottom: 2.5rem;
     border: 1px solid var(--border);
@@ -164,6 +166,7 @@ const earlier = rest.slice(0, 2)
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    content-visibility: auto;
   }
 
   .archive-card {
