@@ -76,30 +76,11 @@ const pageTitle =
         <main class="content" id="main">
           <slot />
         </main>
-        <div class="loader" id="loader" hidden>
-          <div class="loader-spinner"></div>
-        </div>
         <Footer />
       </div>
     </div>
   <script>
-    const loader = document.getElementById('loader')
-
-    document.addEventListener('click', (e) => {
-      const link = e.target.closest('a[href]')
-      if (!link) return
-      if (link.hostname !== location.hostname) return
-      if (link.getAttribute('href')?.startsWith('#')) return
-      if (link.dataset.noLoader !== undefined) return
-      if (e.metaKey || e.ctrlKey || e.shiftKey) return
-      loader?.classList.add('is-visible')
-    })
-
     const NAV_PAGES = ['/', '/quotes', '/credits']
-
-    function showLoader() {
-      loader?.classList.add('is-visible')
-    }
 
     window.addEventListener('keydown', (e) => {
       if (!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return
@@ -114,11 +95,9 @@ const pageTitle =
 
       if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
         e.preventDefault()
-        showLoader()
         location.href = NAV_PAGES[prev]
       } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
         e.preventDefault()
-        showLoader()
         location.href = NAV_PAGES[next]
       }
     }, { capture: true })
