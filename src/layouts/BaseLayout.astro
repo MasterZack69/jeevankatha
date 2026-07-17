@@ -69,9 +69,6 @@ const pageTitle =
     </script>
   </head>
   <body>
-    <div class="loader" id="loader" hidden>
-      <div class="loader-spinner"></div>
-    </div>
     <div class:list={['shell', { 'shell--bare': hideSidebar }]}>
       {!hideSidebar && <Sidebar activeSlug={activeSlug} />}
       <div class="main-col">
@@ -79,6 +76,9 @@ const pageTitle =
         <main class="content" id="main">
           <slot />
         </main>
+        <div class="loader" id="loader" hidden>
+          <div class="loader-spinner"></div>
+        </div>
         <Footer />
       </div>
     </div>
@@ -97,6 +97,10 @@ const pageTitle =
 
     const NAV_PAGES = ['/', '/quotes', '/credits']
 
+    function showLoader() {
+      loader?.classList.add('is-visible')
+    }
+
     window.addEventListener('keydown', (e) => {
       if (!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return
       if (location.pathname.startsWith('/blog/')) return
@@ -110,9 +114,11 @@ const pageTitle =
 
       if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
         e.preventDefault()
+        showLoader()
         location.href = NAV_PAGES[prev]
       } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
         e.preventDefault()
+        showLoader()
         location.href = NAV_PAGES[next]
       }
     }, { capture: true })
