@@ -28,7 +28,7 @@ const blogs = getAllBlogs().slice().reverse()
     <input
       type="search"
       id="blog-search"
-      placeholder="Search entries…"
+      placeholder="Search..."
       aria-label="Search blog entries"
       autocomplete="off"
     />
@@ -64,6 +64,7 @@ const blogs = getAllBlogs().slice().reverse()
         </a>
       </li>
       <li class="nav-divider" role="separator"></li>
+      <li class="nav-section-label">Stories</li>
       {
         blogs.map((blog) => (
           <li>
@@ -311,6 +312,16 @@ const blogs = getAllBlogs().slice().reverse()
     height: 1px;
     background-color: var(--border);
     margin: 0.25rem 0.5rem;
+    list-style: none;
+  }
+
+  .nav-section-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 0.5rem 0.75rem 0.25rem;
     list-style: none;
   }
 
