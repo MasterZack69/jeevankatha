@@ -69,6 +69,9 @@ const pageTitle =
     </script>
   </head>
   <body>
+    <div class="loader" id="loader" hidden>
+      <div class="loader-spinner"></div>
+    </div>
     <div class:list={['shell', { 'shell--bare': hideSidebar }]}>
       {!hideSidebar && <Sidebar activeSlug={activeSlug} />}
       <div class="main-col">
@@ -80,6 +83,18 @@ const pageTitle =
       </div>
     </div>
   <script>
+    const loader = document.getElementById('loader')
+
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a[href]')
+      if (!link) return
+      if (link.hostname !== location.hostname) return
+      if (link.getAttribute('href')?.startsWith('#')) return
+      if (link.dataset.noLoader !== undefined) return
+      if (e.metaKey || e.ctrlKey || e.shiftKey) return
+      loader?.classList.add('is-visible')
+    })
+
     const NAV_PAGES = ['/', '/quotes', '/credits']
 
     window.addEventListener('keydown', (e) => {
