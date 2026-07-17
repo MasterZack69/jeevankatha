@@ -14,6 +14,8 @@ const earlier = rest.slice(0, 2)
     <p class="hero-sub">O mortal fool, beware of the Yap. Ye have been warned.</p>
   </section>
 
+  <img src="/something.webp" alt="" class="hero-image" loading="eager" />
+
   {
     latest && (
       <section class="latest" aria-labelledby="latest-heading">
@@ -64,14 +66,11 @@ const earlier = rest.slice(0, 2)
   .hero {
     display: flex;
     flex-direction: column;
-    gap: 0.875rem;
-    padding-bottom: 2.5rem;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 2.5rem;
+    gap: 0.625rem;
   }
 
   .hero-eyebrow {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -91,6 +90,14 @@ const earlier = rest.slice(0, 2)
     color: var(--muted);
     max-width: 34rem;
     text-wrap: pretty;
+  }
+
+  .hero-image {
+    display: block;
+    width: 100%;
+    border-radius: var(--radius);
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--border);
   }
 
   .section-label {
