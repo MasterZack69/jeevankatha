@@ -59,11 +59,11 @@ const { blog, prev, next } = Astro.props
     if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
       e.preventDefault()
       const prevEl = document.getElementById('nav-prev') as HTMLAnchorElement | null
-      if (prevEl) location.href = prevEl.href
+      if (prevEl) prevEl.click()
     } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
       e.preventDefault()
       const nextEl = document.getElementById('nav-next') as HTMLAnchorElement | null
-      if (nextEl) location.href = nextEl.href
+      if (nextEl) nextEl.click()
     }
   }, { capture: true })
 </script>
