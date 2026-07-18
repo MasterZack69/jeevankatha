@@ -281,7 +281,8 @@ const { showFontSize = false, hideSidebar = false } = Astro.props
       cursor: not-allowed;
     }
 
-    &.active {
+    &.active,
+    &.active:hover {
       background-color: var(--accent);
       color: var(--bg);
     }
