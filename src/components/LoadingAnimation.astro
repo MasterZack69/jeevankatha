@@ -1,4 +1,4 @@
-<div class="loader-overlay" id="loader" hidden>
+<div class="loader-overlay" id="loader" aria-hidden="true">
   <div class="loader-scene">
     <div class="loader-ring loader-ring--1"></div>
     <div class="loader-ring loader-ring--2"></div>
@@ -12,21 +12,18 @@
 
 <style>
   .loader-overlay {
-    position: absolute;
+    position: fixed;
     inset: 0;
-    z-index: 50;
+    left: 18.5rem;
+    z-index: 200;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: color-mix(in srgb, var(--bg) 80%, transparent);
     opacity: 0;
-    transition: opacity 0.25s ease;
+    transition: opacity 0.2s ease;
     pointer-events: none;
-
-    &[hidden] {
-      display: flex;
-      pointer-events: none;
-    }
+  }
   }
 
   .loader-overlay.is-visible {

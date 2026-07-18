@@ -91,7 +91,10 @@ const pageTitle =
       if (link.getAttribute('href')?.startsWith('#')) return
       if (link.dataset.noLoader !== undefined) return
       if (e.metaKey || e.ctrlKey || e.shiftKey) return
+      e.preventDefault()
+      const href = (link as HTMLAnchorElement).href
       loader?.classList.add('is-visible')
+      requestAnimationFrame(() => { location.href = href })
     })
 
     const NAV_PAGES = ['/', '/quotes', '/credits']
@@ -110,11 +113,11 @@ const pageTitle =
       if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
         e.preventDefault()
         loader?.classList.add('is-visible')
-        location.href = NAV_PAGES[prev]
+        requestAnimationFrame(() => { location.href = NAV_PAGES[prev] })
       } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
         e.preventDefault()
         loader?.classList.add('is-visible')
-        location.href = NAV_PAGES[next]
+        requestAnimationFrame(() => { location.href = NAV_PAGES[next] })
       }
     }, { capture: true })
   </script>
