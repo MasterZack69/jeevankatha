@@ -3,6 +3,7 @@ import '../styles/global.scss'
 import Sidebar from '../components/Sidebar.astro'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
+import LoadingAnimation from '../components/LoadingAnimation.astro'
 
 interface Props {
   title?: string
@@ -73,6 +74,7 @@ const pageTitle =
       {!hideSidebar && <Sidebar activeSlug={activeSlug} />}
       <div class="main-col">
         <Header showFontSize={showFontSize} hideSidebar={hideSidebar} />
+        <LoadingAnimation />
         <main class="content" id="main">
           <slot />
         </main>
@@ -80,6 +82,18 @@ const pageTitle =
       </div>
     </div>
   <script>
+    const loader = document.getElementById('loader')
+
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a[href]')
+      if (!link) return
+      if (link.hostname !== location.hostname) return
+      if (link.getAttribute('href')?.startsWith('#')) return
+      if (link.dataset.noLoader !== undefined) return
+      if (e.metaKey || e.ctrlKey || e.shiftKey) return
+      loader?.classList.add('is-visible')
+    })
+
     const NAV_PAGES = ['/', '/quotes', '/credits']
 
     window.addEventListener('keydown', (e) => {
@@ -95,9 +109,11 @@ const pageTitle =
 
       if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
         e.preventDefault()
+        loader?.classList.add('is-visible')
         location.href = NAV_PAGES[prev]
       } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
         e.preventDefault()
+        loader?.classList.add('is-visible')
         location.href = NAV_PAGES[next]
       }
     }, { capture: true })
