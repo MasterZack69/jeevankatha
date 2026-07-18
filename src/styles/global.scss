@@ -4,11 +4,37 @@
 // soft sand, muted taupe
 // ============================================
 
+// Lora — variable serif (weight 400–700)
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/lora-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/lora-latin-italic.woff2') format('woff2');
+}
+
 @font-face {
   font-family: 'Lora Fallback';
   src: local('Georgia');
   size-adjust: 105%;
   ascent-override: 95%;
+}
+
+// Inter — variable sans (weight 400–700)
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/inter-latin.woff2') format('woff2');
 }
 
 @font-face {
