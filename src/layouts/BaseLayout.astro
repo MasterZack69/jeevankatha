@@ -74,7 +74,7 @@ const pageTitle =
       {!hideSidebar && <Sidebar activeSlug={activeSlug} />}
       <div class="main-col">
         <Header showFontSize={showFontSize} hideSidebar={hideSidebar} />
-        <LoadingAnimation />
+        <LoadingAnimation hideSidebar={hideSidebar} />
         <main class="content" id="main">
           <slot />
         </main>
@@ -83,6 +83,27 @@ const pageTitle =
     </div>
   <script>
     const loader = document.getElementById('loader')
+    let navigationTimer = 0
+
+    function showLoader() {
+      if (!loader) return
+      loader.classList.add('is-visible')
+      loader.setAttribute('aria-hidden', 'false')
+    }
+
+    function navigateWithLoader(href) {
+      showLoader()
+      window.clearTimeout(navigationTimer)
+      navigationTimer = window.setTimeout(() => {
+        location.href = href
+      }, 120)
+    }
+
+    window.addEventListener('pageshow', () => {
+      loader?.classList.remove('is-visible')
+      loader?.setAttribute('aria-hidden', 'true')
+      window.clearTimeout(navigationTimer)
+    })
 
     document.addEventListener('click', (e) => {
       const link = e.target.closest('a[href]')
@@ -90,13 +111,11 @@ const pageTitle =
       if (link.hostname !== location.hostname) return
       if (link.getAttribute('href')?.startsWith('#')) return
       if (link.dataset.noLoader !== undefined) return
+      if (link.target && link.target !== '_self') return
       if (e.metaKey || e.ctrlKey || e.shiftKey) return
       e.preventDefault()
       const href = (link as HTMLAnchorElement).href
-      loader?.classList.add('is-visible')
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => { location.href = href })
-      })
+      navigateWithLoader(href)
     })
 
     const NAV_PAGES = ['/', '/quotes', '/credits']
@@ -114,16 +133,10 @@ const pageTitle =
 
       if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
         e.preventDefault()
-        loader?.classList.add('is-visible')
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => { location.href = NAV_PAGES[prev] })
-        })
+        navigateWithLoader(NAV_PAGES[prev])
       } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
         e.preventDefault()
-        loader?.classList.add('is-visible')
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => { location.href = NAV_PAGES[next] })
-        })
+        navigateWithLoader(NAV_PAGES[next])
       }
     }, { capture: true })
   </script>

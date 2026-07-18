@@ -1,4 +1,12 @@
-<div class="loader-overlay" id="loader" aria-hidden="true">
+---
+interface Props {
+  hideSidebar?: boolean
+}
+
+const { hideSidebar = false } = Astro.props
+---
+
+<div class:list={['loader-overlay', { 'loader-overlay--bare': hideSidebar }]} id="loader" aria-hidden="true">
   <div class="loader-scene">
     <div class="loader-ring loader-ring--1"></div>
     <div class="loader-ring loader-ring--2"></div>
@@ -14,16 +22,19 @@
   .loader-overlay {
     position: fixed;
     inset: 0;
-    left: 18.5rem;
     z-index: 200;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-left: 18.5rem;
     background-color: color-mix(in srgb, var(--bg) 80%, transparent);
     opacity: 0;
     transition: opacity 0.2s ease;
     pointer-events: none;
   }
+
+  .loader-overlay--bare {
+    padding-left: 0;
   }
 
   .loader-overlay.is-visible {
@@ -141,5 +152,11 @@
   @keyframes dot-fade {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.2; }
+  }
+
+  @media (max-width: 899px) {
+    .loader-overlay {
+      padding-left: 0;
+    }
   }
 </style>
