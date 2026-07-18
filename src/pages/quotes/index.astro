@@ -2,6 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import styles from './index.module.scss'
 
 const quotesDir = path.resolve('public/quotes')
 let images: string[] = []
@@ -13,20 +14,20 @@ try {
 ---
 
 <BaseLayout title="Quotes">
-  <section class="quotes-page">
-    <header class="quotes-header">
-      <h1 class="quotes-heading">Quotes</h1>
+  <section class={styles['quotes-page']}>
+    <header class={styles['quotes-header']}>
+      <h1 class={styles['quotes-heading']}>Quotes</h1>
       {images.length > 0 && (
-        <p class="quotes-count">{images.length} quote{images.length !== 1 ? 's' : ''}</p>
+        <p class={styles['quotes-count']}>{images.length} quote{images.length !== 1 ? 's' : ''}</p>
       )}
     </header>
 
     {
       images.length > 0 ? (
-        <div class="quotes-grid">
+        <div class={styles['quotes-grid']}>
           {images.map((img, i) => (
             <button
-              class="quote-card"
+              class={styles['quote-card']}
               data-index={i}
               aria-label={`View quote ${i + 1} of ${images.length}`}
             >
@@ -40,43 +41,43 @@ try {
           ))}
         </div>
       ) : (
-        <p class="quotes-empty">No quotes yet.</p>
+        <p class={styles['quotes-empty']}>No quotes yet.</p>
       )
     }
   </section>
 
   {
     images.length > 0 && (
-      <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Quote preview">
-        <div class="lightbox-backdrop"></div>
-        <button class="lightbox-close" aria-label="Close">&times;</button>
+      <div class={styles.lightbox} id="lightbox" role="dialog" aria-modal="true" aria-label="Quote preview">
+        <div class={styles['lightbox-backdrop']}></div>
+        <button class={styles['lightbox-close']} aria-label="Close">&times;</button>
         {images.length > 1 && (
-          <button class="lightbox-prev" aria-label="Previous quote">&lsaquo;</button>
+          <button class={styles['lightbox-prev']} aria-label="Previous quote">&lsaquo;</button>
         )}
-        <figure class="lightbox-figure">
-          <img class="lightbox-image" alt="" />
-          {images.length > 1 && <p class="lightbox-counter" aria-live="polite" />}
+        <figure class={styles['lightbox-figure']}>
+          <img class={styles['lightbox-image']} alt="" />
+          {images.length > 1 && <p class={styles['lightbox-counter']} aria-live="polite" />}
         </figure>
         {images.length > 1 && (
-          <button class="lightbox-next" aria-label="Next quote">&rsaquo;</button>
+          <button class={styles['lightbox-next']} aria-label="Next quote">&rsaquo;</button>
         )}
       </div>
     )
   }
 </BaseLayout>
 
-<script define:vars={{ images }}>
-  const cards = document.querySelectorAll('.quote-card')
+<script define:vars={{ images, styles }}>
+  const cards = document.querySelectorAll('.' + CSS.escape(styles['quote-card']))
   const lightbox = document.getElementById('lightbox')
 
   if (lightbox && cards.length > 0) {
-    const lightboxImg = lightbox.querySelector('.lightbox-image')
-    const counter = lightbox.querySelector('.lightbox-counter')
-    const closeBtn = lightbox.querySelector('.lightbox-close')
-    const prevBtn = lightbox.querySelector('.lightbox-prev')
-    const nextBtn = lightbox.querySelector('.lightbox-next')
-    const backdrop = lightbox.querySelector('.lightbox-backdrop')
-    const page = document.querySelector('.quotes-page')
+    const lightboxImg = lightbox.querySelector('.' + CSS.escape(styles['lightbox-image']))
+    const counter = lightbox.querySelector('.' + CSS.escape(styles['lightbox-counter']))
+    const closeBtn = lightbox.querySelector('.' + CSS.escape(styles['lightbox-close']))
+    const prevBtn = lightbox.querySelector('.' + CSS.escape(styles['lightbox-prev']))
+    const nextBtn = lightbox.querySelector('.' + CSS.escape(styles['lightbox-next']))
+    const backdrop = lightbox.querySelector('.' + CSS.escape(styles['lightbox-backdrop']))
+    const page = document.querySelector('.' + CSS.escape(styles['quotes-page']))
 
     let currentIndex = 0
     let lastFocused = null
@@ -90,12 +91,12 @@ try {
     }
 
     function render() {
-      lightboxImg.classList.add('is-loading')
+      lightboxImg.classList.add(styles['is-loading'])
       const im = new Image()
       im.onload = () => {
         lightboxImg.src = srcFor(currentIndex)
         lightboxImg.alt = `Quote ${currentIndex + 1}`
-        lightboxImg.classList.remove('is-loading')
+        lightboxImg.classList.remove(styles['is-loading'])
       }
       im.src = srcFor(currentIndex)
       if (counter) counter.textContent = `${currentIndex + 1} / ${images.length}`
@@ -107,14 +108,14 @@ try {
       currentIndex = index
       lastFocused = document.activeElement
       render()
-      lightbox.classList.add('is-open')
+      lightbox.classList.add(styles['is-open'])
       page?.setAttribute('inert', '')
       document.body.style.overflow = 'hidden'
       closeBtn?.focus()
     }
 
     function close() {
-      lightbox.classList.remove('is-open')
+      lightbox.classList.remove(styles['is-open'])
       page?.removeAttribute('inert')
       document.body.style.overflow = ''
       if (lastFocused instanceof HTMLElement) lastFocused.focus()
@@ -152,7 +153,7 @@ try {
     })
 
     document.addEventListener('keydown', (e) => {
-      if (!lightbox.classList.contains('is-open')) return
+      if (!lightbox.classList.contains(styles['is-open'])) return
       if (e.key === 'Escape') close()
       if (e.key === 'ArrowLeft') prev()
       if (e.key === 'ArrowRight') next()
@@ -169,238 +170,3 @@ try {
     }, { passive: true })
   }
 </script>
-
-<style lang="scss">
-  .quotes-page {
-    padding-bottom: 2rem;
-  }
-
-  .quotes-header {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-  }
-
-  .quotes-heading {
-    font-family: var(--font-serif);
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    font-weight: 600;
-    line-height: 1.15;
-  }
-
-  .quotes-count {
-    font-size: 0.875rem;
-    color: var(--muted);
-  }
-
-  // --- Masonry grid: quote screenshots come in all shapes, so columns
-  // (not fixed-height grid rows) keep it tidy instead of choppy/uneven ---
-  .quotes-grid {
-    column-count: 1;
-    column-gap: 1.5rem;
-
-    @media (min-width: 540px) {
-      column-count: 2;
-    }
-
-    @media (min-width: 900px) {
-      column-count: 2;
-    }
-  }
-
-  .quote-card {
-    display: block;
-    width: 100%;
-    break-inside: avoid;
-    margin-bottom: 1.5rem;
-    border-radius: var(--radius);
-    overflow: hidden;
-    border: 1px solid var(--border);
-    background-color: var(--surface);
-    cursor: pointer;
-    position: relative;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-
-    &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.15) 100%);
-      opacity: 0;
-      transition: opacity 0.25s ease;
-      pointer-events: none;
-    }
-
-    // Lift instead of scale — scaling up in a tight grid made hovered
-    // cards render underneath their neighbours and get clipped.
-    &:hover,
-    &:focus-visible {
-      transform: translateY(-4px);
-      border-color: var(--accent);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-      z-index: 1;
-
-      &::after {
-        opacity: 1;
-      }
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-  }
-
-  .quotes-empty {
-    color: var(--muted);
-    font-size: 1.0625rem;
-  }
-
-  // --- Lightbox ---
-  .lightbox {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.25s ease, visibility 0.25s ease;
-
-    &.is-open {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-    }
-  }
-
-  .lightbox-backdrop {
-    position: absolute;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-    cursor: pointer;
-  }
-
-  .lightbox-figure {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-    margin: 0;
-  }
-
-  .lightbox-image {
-    max-width: 90vw;
-    max-height: 80vh;
-    width: auto;
-    height: auto;
-    border-radius: calc(var(--radius) - 0.25rem);
-    box-shadow: 0 4px 40px rgba(0, 0, 0, 0.5);
-    transform: scale(0.96);
-    opacity: 1;
-    transition: transform 0.25s ease, opacity 0.2s ease;
-
-    &.is-loading {
-      opacity: 0.35;
-    }
-  }
-
-  .lightbox.is-open .lightbox-image {
-    transform: scale(1);
-  }
-
-  .lightbox-counter {
-    margin: 0;
-    font-size: 0.8125rem;
-    letter-spacing: 0.02em;
-    color: rgba(255, 255, 255, 0.75);
-  }
-
-  .lightbox-close {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    z-index: 2;
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: 1.75rem;
-    line-height: 1;
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.15s ease;
-
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.8);
-    }
-
-    &:focus-visible {
-      outline: 2px solid #fff;
-      outline-offset: 2px;
-    }
-  }
-
-  .lightbox-prev,
-  .lightbox-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2;
-    width: 3rem;
-    height: 3rem;
-    font-size: 2.5rem;
-    line-height: 1;
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.15s ease;
-
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.8);
-    }
-
-    &:focus-visible {
-      outline: 2px solid #fff;
-      outline-offset: 2px;
-    }
-  }
-
-  .lightbox-prev {
-    left: 1rem;
-  }
-
-  .lightbox-next {
-    right: 1rem;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .quote-card,
-    .lightbox,
-    .lightbox-image {
-      transition: none !important;
-    }
-
-    .quote-card:hover,
-    .quote-card:focus-visible {
-      transform: none;
-    }
-  }
-</style>

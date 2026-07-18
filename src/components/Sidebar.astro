@@ -1,5 +1,6 @@
 ---
 import { getAllBlogs } from '../lib/blogs'
+import styles from './Sidebar.module.scss'
 
 interface Props {
   activeSlug?: string
@@ -9,19 +10,19 @@ const { activeSlug } = Astro.props
 const blogs = getAllBlogs().slice().reverse()
 ---
 
-<div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+<div class={styles['sidebar-scrim']} id="sidebar-scrim" aria-hidden="true"></div>
 
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-top">
-    <button id="sidebar-close" class="sidebar-close-btn" aria-label="Close blog list">
+<aside class={styles.sidebar} id="sidebar">
+  <div class={styles['sidebar-top']}>
+    <button id="sidebar-close" class={styles['sidebar-close-btn']} aria-label="Close blog list">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
         <line x1="18" y1="6" x2="6" y2="18"></line>
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
     </button>
   </div>
-  <div class="search-wrap">
-    <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+  <div class={styles['search-wrap']}>
+    <svg class={styles['search-icon']} width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
       <circle cx="11" cy="11" r="7"></circle>
       <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
     </svg>
@@ -34,49 +35,49 @@ const blogs = getAllBlogs().slice().reverse()
     />
   </div>
 
-  <nav class="blog-nav" aria-label="Blog entries">
-    <ul class="blog-list" id="blog-list">
+  <nav class={styles['blog-nav']} aria-label="Blog entries">
+    <ul class={styles['blog-list']} id="blog-list">
       <li>
         <a
           href="/"
-          class:list={['blog-link', { active: Astro.url.pathname === '/' }]}
+          class:list={[styles['blog-link'], { [styles.active]: Astro.url.pathname === '/' }]}
           aria-current={Astro.url.pathname === '/' ? 'page' : undefined}
         >
-          <span class="blog-link-title">Home</span>
+          <span class={styles['blog-link-title']}>Home</span>
         </a>
       </li>
       <li>
         <a
           href="/quotes/"
-          class:list={['blog-link', { active: Astro.url.pathname.startsWith('/quotes') }]}
+          class:list={[styles['blog-link'], { [styles.active]: Astro.url.pathname.startsWith('/quotes') }]}
           aria-current={Astro.url.pathname.startsWith('/quotes') ? 'page' : undefined}
         >
-          <span class="blog-link-title">Quotes</span>
+          <span class={styles['blog-link-title']}>Quotes</span>
         </a>
       </li>
       <li>
         <a
           href="/credits/"
-          class:list={['blog-link', { active: Astro.url.pathname.startsWith('/credits') }]}
+          class:list={[styles['blog-link'], { [styles.active]: Astro.url.pathname.startsWith('/credits') }]}
           aria-current={Astro.url.pathname.startsWith('/credits') ? 'page' : undefined}
         >
-          <span class="blog-link-title">Credits</span>
+          <span class={styles['blog-link-title']}>Credits</span>
         </a>
       </li>
-      <li class="nav-divider" role="separator"></li>
-      <li class="nav-section-label">Stories</li>
+      <li class={styles['nav-divider']} role="separator"></li>
+      <li class={styles['nav-section-label']}>Stories</li>
       {
         blogs.map((blog) => (
           <li>
             <a
               href={`/blog/${blog.slug}/`}
-              class:list={['blog-link', { active: blog.slug === activeSlug }]}
+              class:list={[styles['blog-link'], { [styles.active]: blog.slug === activeSlug }]}
               data-title={blog.title.toLowerCase()}
               data-date={blog.dateFormatted.toLowerCase()}
               aria-current={blog.slug === activeSlug ? 'page' : undefined}
             >
-              <span class="blog-link-title">{blog.title}</span>
-              <time class="blog-link-date" datetime={blog.date}>
+              <span class={styles['blog-link-title']}>{blog.title}</span>
+              <time class={styles['blog-link-date']} datetime={blog.date}>
                 {blog.dateFormatted}
               </time>
             </a>
@@ -84,11 +85,11 @@ const blogs = getAllBlogs().slice().reverse()
         ))
       }
     </ul>
-    <p class="no-results" id="no-results" hidden>No entries match your search.</p>
+    <p class={styles['no-results']} id="no-results" hidden>No entries match your search.</p>
   </nav>
 </aside>
 
-<script>
+<script define:vars={{ styles }}>
   // --- Search filtering ---
   const search = document.getElementById('blog-search') as HTMLInputElement | null
   const list = document.getElementById('blog-list')
@@ -100,7 +101,7 @@ const blogs = getAllBlogs().slice().reverse()
       const q = search.value.trim().toLowerCase()
       let visible = 0
       for (const li of items) {
-        const link = li.querySelector<HTMLAnchorElement>('.blog-link')
+        const link = li.querySelector<HTMLAnchorElement>('.' + CSS.escape(styles['blog-link']))
         const title = link?.dataset.title
         const date = link?.dataset.date
         if (!title) {
@@ -120,8 +121,8 @@ const blogs = getAllBlogs().slice().reverse()
   const scrim = document.getElementById('sidebar-scrim')
 
   function setOpen(open: boolean) {
-    sidebar?.classList.toggle('open', open)
-    scrim?.classList.toggle('visible', open)
+    sidebar?.classList.toggle(styles.open, open)
+    scrim?.classList.toggle(styles.visible, open)
     const toggle = document.getElementById('sidebar-toggle')
     if (toggle) {
       toggle.setAttribute('aria-expanded', String(open))
@@ -130,7 +131,7 @@ const blogs = getAllBlogs().slice().reverse()
   }
 
   document.addEventListener('sidebar:toggle', () => {
-    setOpen(!sidebar?.classList.contains('open'))
+    setOpen(!sidebar?.classList.contains(styles.open))
   })
   scrim?.addEventListener('click', () => setOpen(false))
   document.addEventListener('keydown', (e) => {
@@ -158,217 +159,3 @@ const blogs = getAllBlogs().slice().reverse()
     touchDeltaX = 0
   }, { passive: true })
 </script>
-
-<style lang="scss">
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    width: 18.5rem;
-    flex-shrink: 0;
-    padding: 2rem 1.25rem;
-    background-color: var(--surface);
-    border-right: 1px solid var(--border);
-    height: 100dvh;
-    position: sticky;
-    top: 0;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    contain: paint layout style;
-    transition: background-color 0.25s ease, border-color 0.25s ease;
-  }
-
-  .sidebar-top {
-    display: none;
-    justify-content: flex-end;
-  }
-
-  .sidebar-close-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    color: var(--muted);
-    transition: background-color 0.15s ease, color 0.15s ease;
-
-    &:hover {
-      background-color: var(--surface-2);
-      color: var(--text);
-    }
-  }
-
-  .search-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-
-  .search-icon {
-    position: absolute;
-    left: 0.875rem;
-    color: var(--muted);
-    pointer-events: none;
-  }
-
-  #blog-search {
-    width: 100%;
-    padding: 0.625rem 0.875rem 0.625rem 2.5rem;
-    border: 1px solid var(--border);
-    border-radius: calc(var(--radius) * 2);
-    background-color: var(--bg);
-    color: var(--text);
-    font-size: 0.875rem;
-    transition: border-color 0.15s ease;
-
-    &::placeholder {
-      color: var(--muted);
-    }
-
-    &:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
-  }
-
-  .blog-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    min-height: 0;
-  }
-
-  .blog-list {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.125rem;
-  }
-
-  .blog-link {
-    display: flex;
-    flex-direction: column;
-    gap: 0.125rem;
-    padding: 0.625rem 0.75rem 0.625rem 1rem;
-    border-radius: calc(var(--radius) - 0.25rem);
-    color: var(--text);
-    border-left: 2px solid transparent;
-    position: relative;
-    overflow: hidden;
-    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: calc(var(--radius) - 0.25rem);
-      background: linear-gradient(135deg, var(--accent-soft) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    &:hover {
-      background-color: var(--surface-2);
-      border-left-color: var(--accent);
-      transform: translateX(4px);
-      text-decoration: none;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-
-      &::before {
-        opacity: 1;
-      }
-
-      .blog-link-title {
-        color: var(--accent);
-      }
-    }
-
-    &.active {
-      border-left-color: var(--accent);
-
-      .blog-link-title {
-        color: var(--accent);
-        font-weight: 600;
-      }
-    }
-  }
-
-  .blog-link-title {
-    font-family: var(--font-serif);
-    font-size: 0.9375rem;
-    font-weight: 500;
-    line-height: 1.35;
-    text-wrap: balance;
-  }
-
-  .blog-link-date {
-    font-size: 0.75rem;
-    color: var(--muted);
-  }
-
-  .nav-divider {
-    height: 1px;
-    background-color: var(--border);
-    margin: 0.25rem 0.5rem;
-    list-style: none;
-  }
-
-  .nav-section-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    padding: 0.5rem 0.75rem 0.25rem;
-    list-style: none;
-  }
-
-  .no-results {
-    font-size: 0.875rem;
-    color: var(--muted);
-    padding: 0.75rem 0.5rem;
-  }
-
-  .sidebar-scrim {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 40;
-    background-color: rgba(0, 0, 0, 0.45);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-
-    &.visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
-  }
-
-    @media (max-width: 899px) {
-    .sidebar {
-      position: fixed;
-      left: 0;
-      top: 0;
-      z-index: 50;
-      transform: translateX(-100%);
-      transition: transform 0.25s ease;
-      box-shadow: var(--shadow);
-      overscroll-behavior: contain;
-
-      &.open {
-        transform: translateX(0);
-      }
-    }
-
-    .sidebar-scrim {
-      display: block;
-    }
-
-    .sidebar-top {
-      display: flex;
-    }
-  }
-</style>

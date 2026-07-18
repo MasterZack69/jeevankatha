@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { getAllBlogs } from '../lib/blogs'
+import styles from './index.module.scss'
 
 const blogs = getAllBlogs()
 const [latest, ...rest] = blogs
@@ -8,27 +9,27 @@ const earlier = rest.slice(0, 2)
 ---
 
 <BaseLayout>
-  <section class="hero">
-    <p class="hero-eyebrow">MasterZack's</p>
-    <h1 class="hero-title">JeevanKatha</h1>
-    <p class="hero-sub">O mortal fool, beware of the Yap. Ye have been warned.</p>
+  <section class={styles.hero}>
+    <p class={styles['hero-eyebrow']}>MasterZack's</p>
+    <h1 class={styles['hero-title']}>JeevanKatha</h1>
+    <p class={styles['hero-sub']}>O mortal fool, beware of the Yap. Ye have been warned.</p>
   </section>
 
-  <img src="/something.webp" alt="" class="hero-image" loading="eager" fetchpriority="high" width="1200" height="1600" />
+  <img src="/something.webp" alt="" class={styles['hero-image']} loading="eager" fetchpriority="high" width="1200" height="1600" />
 
   {
     latest && (
-      <section class="latest" aria-labelledby="latest-heading">
-        <h2 class="section-label" id="latest-heading">
+      <section class={styles.latest} aria-labelledby="latest-heading">
+        <h2 class={styles['section-label']} id="latest-heading">
           Latest entry
         </h2>
-        <a href={`/blog/${latest.slug}/`} class="latest-card">
-          <time class="card-date" datetime={latest.date}>
+        <a href={`/blog/${latest.slug}/`} class={styles['latest-card']}>
+          <time class={styles['card-date']} datetime={latest.date}>
             {latest.dateFormatted}
           </time>
-          <h3 class="latest-title">{latest.title}</h3>
-          <p class="latest-excerpt">{latest.excerpt}</p>
-          <span class="card-meta">Read entry &rarr;</span>
+          <h3 class={styles['latest-title']}>{latest.title}</h3>
+          <p class={styles['latest-excerpt']}>{latest.excerpt}</p>
+          <span class={styles['card-meta']}>Read entry &rarr;</span>
         </a>
       </section>
     )
@@ -36,20 +37,20 @@ const earlier = rest.slice(0, 2)
 
   {
     earlier.length > 0 && (
-      <section class="archive" aria-labelledby="archive-heading">
-        <h2 class="section-label" id="archive-heading">
+      <section class={styles.archive} aria-labelledby="archive-heading">
+        <h2 class={styles['section-label']} id="archive-heading">
           Earlier entries
         </h2>
-        <ul class="archive-list">
+        <ul class={styles['archive-list']}>
           {earlier.map((blog) => (
             <li>
-              <a href={`/blog/${blog.slug}/`} class="archive-card">
-                <div class="archive-text">
-                  <h3 class="archive-title">{blog.title}</h3>
-                  <p class="archive-excerpt">{blog.excerpt}</p>
+              <a href={`/blog/${blog.slug}/`} class={styles['archive-card']}>
+                <div class={styles['archive-text']}>
+                  <h3 class={styles['archive-title']}>{blog.title}</h3>
+                  <p class={styles['archive-excerpt']}>{blog.excerpt}</p>
                 </div>
-                <div class="archive-side">
-                  <time class="card-date" datetime={blog.date}>
+                <div class={styles['archive-side']}>
+                  <time class={styles['card-date']} datetime={blog.date}>
                     {blog.dateFormatted}
                   </time>
                 </div>
@@ -61,173 +62,3 @@ const earlier = rest.slice(0, 2)
     )
   }
 </BaseLayout>
-
-<style lang="scss">
-  .hero {
-    display: flex;
-    flex-direction: column;
-    gap: 0.625rem;
-  }
-
-  .hero-eyebrow {
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-
-  .hero-title {
-    font-family: var(--font-serif);
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 600;
-    line-height: 1.15;
-    text-wrap: balance;
-  }
-
-  .hero-sub {
-    font-size: 1.0625rem;
-    color: var(--muted);
-    max-width: 34rem;
-    text-wrap: pretty;
-  }
-
-  .hero-image {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 3 / 4;
-    border-radius: var(--radius);
-    margin-bottom: 2.5rem;
-    border: 1px solid var(--border);
-  }
-
-  .section-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 1rem;
-  }
-
-  .latest {
-    margin-bottom: 2.5rem;
-  }
-
-  .latest-card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.625rem;
-    padding: 1.75rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background-color: var(--surface);
-    color: var(--text);
-    box-shadow: var(--shadow);
-    transition: border-color 0.2s ease, transform 0.2s ease;
-
-    &:hover {
-      text-decoration: none;
-      border-color: var(--accent);
-      transform: translateY(-2px);
-    }
-  }
-
-  .latest-title {
-    font-family: var(--font-serif);
-    font-size: 1.625rem;
-    font-weight: 600;
-    line-height: 1.25;
-    text-wrap: balance;
-  }
-
-  .latest-excerpt {
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  .card-date {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-
-  .card-meta {
-    font-size: 0.8125rem;
-    color: var(--muted);
-  }
-
-  .archive-list {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    content-visibility: auto;
-  }
-
-  .archive-card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 1.25rem 1.5rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background-color: var(--surface);
-    color: var(--text);
-    transition: border-color 0.2s ease, background-color 0.2s ease;
-
-    &:hover {
-      text-decoration: none;
-      border-color: var(--accent);
-    }
-
-    @media (min-width: 640px) {
-      flex-direction: row;
-      justify-content: space-between;
-      gap: 1.5rem;
-    }
-  }
-
-  .archive-text {
-    display: flex;
-    flex-direction: column;
-    gap: 0.375rem;
-    min-width: 0;
-  }
-
-  .archive-title {
-    font-family: var(--font-serif);
-    font-size: 1.125rem;
-    font-weight: 600;
-    line-height: 1.3;
-    text-wrap: balance;
-  }
-
-  .archive-excerpt {
-    font-size: 0.875rem;
-    color: var(--muted);
-    line-height: 1.55;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .archive-side {
-    display: flex;
-    flex-direction: row;
-    gap: 0.75rem;
-    align-items: center;
-    flex-shrink: 0;
-
-    @media (min-width: 640px) {
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 0.25rem;
-    }
-  }
-</style>
