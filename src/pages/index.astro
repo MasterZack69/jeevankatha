@@ -1,6 +1,8 @@
 ---
+import { Image } from 'astro:assets'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { getAllBlogs } from '../lib/blogs'
+import heroImage from '../../public/something.webp'
 
 const blogs = getAllBlogs()
 const [latest, ...rest] = blogs
@@ -14,7 +16,15 @@ const earlier = rest.slice(0, 2)
     <p class="hero-sub">O mortal fool, beware of the Yap. Ye have been warned.</p>
   </section>
 
-  <img src="/something.webp" alt="" class="hero-image" loading="eager" fetchpriority="high" width="1200" height="1600" />
+  <Image
+    src={heroImage}
+    alt=""
+    class="hero-image"
+    widths={[320, 480, 640, 736]}
+    sizes="(min-width: 768px) 41rem, calc(100vw - 3rem)"
+    loading="eager"
+    fetchpriority="high"
+  />
 
   {
     latest && (
